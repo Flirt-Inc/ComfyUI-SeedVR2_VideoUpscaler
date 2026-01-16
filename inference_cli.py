@@ -112,10 +112,10 @@ import subprocess
 import shutil
 
 # Project imports
-from src.utils.downloads import download_weight
-from src.utils.model_registry import get_available_dit_models, DEFAULT_DIT, DEFAULT_VAE
-from src.utils.constants import SEEDVR2_FOLDER_NAME
-from src.core.generation_utils import (
+from seedvr2_pkg.utils.downloads import download_weight
+from seedvr2_pkg.utils.model_registry import get_available_dit_models, DEFAULT_DIT, DEFAULT_VAE
+from seedvr2_pkg.utils.constants import SEEDVR2_FOLDER_NAME
+from seedvr2_pkg.core.generation_utils import (
     setup_generation_context, 
     prepare_runner, 
     compute_generation_info, 
@@ -124,14 +124,14 @@ from src.core.generation_utils import (
     load_text_embeddings,
     script_directory
 )
-from src.core.generation_phases import (
+from seedvr2_pkg.core.generation_phases import (
     encode_all_batches, 
     upscale_all_batches, 
     decode_all_batches, 
     postprocess_all_batches
 )
-from src.utils.debug import Debug
-from src.optimization.memory_manager import clear_memory, get_gpu_backend, is_cuda_available
+from seedvr2_pkg.utils.debug import Debug
+from seedvr2_pkg.optimization.memory_manager import clear_memory, get_gpu_backend, is_cuda_available
 debug = Debug(enabled=False)  # Will be enabled via --debug CLI flag
 
 
