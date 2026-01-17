@@ -100,12 +100,27 @@ def ensure_bitsandbytes_safe():
         # Success - bitsandbytes works, other nodes can use it
     except (ImportError, OSError, RuntimeError, ValueError):
         # Installation broken, not present, or version detection failed - create stub
+        # Must include nn and functional submodules for diffusers LoRA loading
         stub = types.ModuleType('bitsandbytes')
         stub.__spec__ = importlib.machinery.ModuleSpec('bitsandbytes', None)
         stub.__file__ = None
         stub.__path__ = []
         stub.__version__ = "0.0.0"
+
+        # Create nn submodule with placeholder classes
+        nn_stub = types.ModuleType('bitsandbytes.nn')
+        nn_stub.Linear8bitLt = None
+        nn_stub.Linear4bit = None
+        nn_stub.Params4bit = None
+        stub.nn = nn_stub
+
+        # Create functional submodule
+        functional_stub = types.ModuleType('bitsandbytes.functional')
+        stub.functional = functional_stub
+
         sys.modules['bitsandbytes'] = stub
+        sys.modules['bitsandbytes.nn'] = nn_stub
+        sys.modules['bitsandbytes.functional'] = functional_stub
 
 
 # Run all shims immediately on import, before torch/diffusers
