@@ -65,11 +65,11 @@ class DivisiblePad:
         if pad_height == 0 and pad_width == 0:
             return image
 
-        # Pad symmetrically (or bottom/right)
+        # Pad with reflection to avoid edge discontinuity artifacts during upscaling
         if isinstance(image, torch.Tensor):
             # Pad format: (left, right, top, bottom)
             padding = (0, pad_width, 0, pad_height)
-            image = torch.nn.functional.pad(image, padding, mode='constant', value=0.0)
+            image = torch.nn.functional.pad(image, padding, mode='reflect')
         elif isinstance(image, Image.Image):
             new_width = width + pad_width
             new_height = height + pad_height
